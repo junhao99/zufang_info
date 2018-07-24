@@ -68,6 +68,7 @@
 
 
     
+
     </style>
 </head>
 <body>
@@ -85,6 +86,13 @@
         </div>
     </div>
 </div>
+<!--{{1.title}}{{2.title}}-->
+
+<!--{%for i in '12345'|make_list%}-->
+<!--{%endfor%}-->
+
+
+{%for i in aaa%}
 
 <div class="zufang_content">
     <div class="media">
@@ -95,8 +103,8 @@
         </div>
         <div class="media-body">
 
-            <a href=""><h4 class="media-heading">单间出租)航海路 未来路 宝景花园 出门公交站 旁有小吃街 交通方便</h4></a>
-            <label><p class="text-muted">价格：1000/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：60平&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园
+            <a href=""><h4 class="media-heading">{{i.title}}</h4></a>
+            <label><p class="text-muted">价格：{{i.month_money}}/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：{{i.mianji}}&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园
                 &nbsp;&nbsp;&nbsp;&nbsp;郑州管城区</p>
             </label>
 
@@ -114,35 +122,38 @@
     </div>
 </div>
 <br><br>
-<div class="zufang_content">
-    <div class="media">
-        <div class="media-left">
-            <a href="#">
-                <img class="media-object" src="/static/fang1.jpeg" alt="...">
-            </a>
-        </div>
-        <div class="media-body">
 
-            <a href=""><h4 class="media-heading">单间出租)航海路 未来路 宝景花园 出门公交站 旁有小吃街 交通方便</h4></a>
-            <label><p class="text-muted">价格：1000/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：60平&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园
-                &nbsp;&nbsp;&nbsp;&nbsp;郑州管城区</p>
-            </label>
+{{forloop.counter}}
+{%endfor%}
+<!--<div class="zufang_content">-->
+    <!--<div class="media">-->
+        <!--<div class="media-left">-->
+            <!--<a href="#">-->
+                <!--<img class="media-object" src="/static/fang1.jpeg" alt="...">-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="media-body">-->
 
-            <!--<div class="touxiang"><img src="/static/background.jpg" alt="..." class="img-1circle" align="left">&nbsp;&nbsp;   张三 <br>  &nbsp;1333333333-->
+            <!--<a href=""><h4 class="media-heading">单间出租)航海路 未来路 宝景花园 出门公交站 旁有小吃街 交通方便</h4></a>-->
+            <!--<label><p class="text-muted">价格：1000/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：60平&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园-->
+                <!--&nbsp;&nbsp;&nbsp;&nbsp;郑州管城区</p>-->
+            <!--</label>-->
 
+            <!--&lt;!&ndash;<div class="touxiang"><img src="/static/background.jpg" alt="..." class="img-1circle" align="left">&nbsp;&nbsp;   张三 <br>  &nbsp;1333333333&ndash;&gt;-->
+
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+            <!--<div>-->
+                <!--<img src="/static/background.jpg" id="touxiang" class="fl sp-icon-list" alt="绿色">-->
+                <!--<span class="fl">&nbsp;&nbsp;张三 </span>-->
+                <!--<br>-->
+                <!--<span>&nbsp;&nbsp;13333333333</span>-->
             <!--</div>-->
 
 
-            <div>
-                <img src="/static/background.jpg" id="touxiang" class="fl sp-icon-list" alt="绿色">
-                <span class="fl">&nbsp;&nbsp;张三 </span>
-                <br>
-                <span>&nbsp;&nbsp;13333333333</span>
-            </div>
-
-            
-
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 </body>
 </html>
