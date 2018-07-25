@@ -38,7 +38,22 @@ def get_ip_port():
     return res
 
 # 获取58页面所有租房信息
-def get_webdata(i, proxies):
+def spider(url,proxies):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'
+    }
+
+    web_data = requests.get(url, headers=headers, proxies=proxies, timeout=1)
+    print(web_data.status_code)
+    html = web_data.text
+
+    print(html)
+    time.sleep(1)
+    return html
+
+
+
+def get_webdata(i, proxies,):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'
     }
@@ -52,13 +67,16 @@ def get_webdata(i, proxies):
     getinfomation(html)
     time.sleep(2)
     # print(i)
-def dbconn(i,title,month_money,mianji):
+
+#     连接数据库进行操作
+def dbconn(i,title,month_money,mianji,img):
     i = i+1
     conn = psycopg2.connect(dbname="test2", user="test",
                             password="123456", host="127.0.0.1", port="5432")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO zufang_zufang_info VALUES('%d','%s', '%s', '%s')"%(i,title,month_money,mianji))
+    cursor.execute("INSERT INTO zufang_zufang_info VALUES('%d','%s', '%s', '%s','%s')"%(i,title,month_money,mianji,img))
     conn.commit()
+
     # s = "INSERT INTO zufang_zufang_info VALUES('%s', '%s', '%s')"%("dsd","dsds","dffdqq")
     # print(s)
     # rows = cursor.fetchall()
@@ -92,6 +110,12 @@ def getinfomation(res):
     address = html.xpath("//div/p[@class='add']/a/text()")
     # print(address)
     # 地址
+    img  = html.xpath("//div[@class='img_list']/a/img/@lazy_src")
+    # imgurl图片地址
+    print(img)
+    for i in img:
+        img_url = "http://"+i
+        print(img_url)
 
     for i,j in enumerate(money):
         print("++"*10)
@@ -102,7 +126,26 @@ def getinfomation(res):
         c= mianji[i].split()[1]
         # c是面积
         # 传给dbconn 存入数据库
-        dbconn(i,a,b,c)
+        img_url = "http://"
+        d = img_url+img[i]
+        # d是图片
+        dbconn(i,a,b,c,d)
+
+
+    # next_url = html.xpath("//div[@class='listBox']/ul/li/@logr")
+    # start_url = "http://zz.58.com/zufang/"
+    # for i in next_url:
+    #
+    #     content_url = start_url+i.split("_")[3]+"x.shtml"
+    #     print(content_url)
+    #     a = spider("http://zz.58.com/zufang/34837658876850x.shtml",proxies)
+    #     print(a)
+    #     break
+#         a就是得到租房信息的详情html
+
+
+
+
 
 # 位置
 #     info = Zufang_Info.objects.create(title='zhangsan', month_money='male')
@@ -120,16 +163,10 @@ if __name__ == '__main__':
         get_webdata(j, proxies)
         j += 1
 
+    # spider()/
 
-        # try:
-        #
-        #     get_webdata(j, proxies)
-        #     j += 1
-        #     break
-        # except Exception as e:
-        #     print("error")
-        #     continue
-        # break
+
+
 
     # dbconn()
 
