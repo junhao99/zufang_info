@@ -32,7 +32,7 @@
         }
 
         <!--.zufang_content{-->
-        <!--text-align:center;-->
+
         <!--}-->
 
         .media-left{
@@ -40,8 +40,12 @@
         }
 
         .media-body{
+        margin-right:25%;
         margin-left:30px;
+
         }
+        .media-body:hover{background:#ededed;}
+
         .touxiang{
         margin-left:30%;
 
@@ -72,6 +76,7 @@ text-align:center;
 
 
     
+
 
     </style>
 </head>
@@ -108,19 +113,20 @@ text-align:center;
         </div>
         <div class="media-body">
 
-            <a href=""><h4 class="media-heading">{{i.title}}</h4></a>
-            <label><p class="text-muted">价格：{{i.month_money}}/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：{{i.mianji}}&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园
-                &nbsp;&nbsp;&nbsp;&nbsp;郑州管城区</p>
+            <a href="{%url 'content' i.id%}"><h4 class="media-heading">{{i.title}}</h4></a>
+            <label><p class="text-muted">价格：{{i.month_money}}/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：{{i.mianji}}&nbsp;&nbsp;&nbsp;&nbsp;
+                位置：{{i.address}}
+                &nbsp;&nbsp;&nbsp;&nbsp;郑州{{i.city_address}}</p>
             </label>
 
             <!--<div class="touxiang"><img src="/static/background.jpg" alt="..." class="img-1circle" align="left">&nbsp;&nbsp;   张三 <br>  &nbsp;1333333333-->
 
             <!--</div>-->
             <div>
-                <img src="/static/background.jpg" id="touxiang" class="fl sp-icon-list" alt="绿色">
-                <span class="fl">&nbsp;&nbsp;张三 </span>
+                <img src="{{i.jjr_img}}" id="touxiang" class="fl sp-icon-list" alt="绿色">
+                <span class="fl">&nbsp;&nbsp;{{i.jjr}} </span>
                 <br>
-                <span>&nbsp;&nbsp;13333333333</span>
+                <span>&nbsp;&nbsp;{{i.jjr_phone}}</span>
             </div>
 
         </div>
@@ -129,37 +135,38 @@ text-align:center;
 <br><br>
 
 {{forloop.counter}}
+
 {%endfor%}
 
 
 <nav>
-  <ul class="pagination pagination-lg">
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li><a href="{%url 'onepage' 2%}">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
+    <ul class="pagination pagination-lg">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li><a href="{%url 'onepage' 2%}">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
 </nav>
 
 {% for contact in contacts %}
-    {# Each "contact" is a Contact model object. #}
-    {{ contact.full_name|upper }}<br />
-    ...
+{# Each "contact" is a Contact model object. #}
+{{ contact.full_name|upper }}<br/>
+...
 {% endfor %}
 
 <div class="page_fenye">
-    <span class="step-links"style="color:black;font-size:30px">
+    <span class="step-links" style="color:black;font-size:30px">
         {% if contacts.has_previous %}
             <a href="{%url 'onepage' 1%}">首页</a>
         {% endif %}
@@ -175,36 +182,35 @@ text-align:center;
 </div>
 
 
-
 <!--<div class="zufang_content">-->
-    <!--<div class="media">-->
-        <!--<div class="media-left">-->
-            <!--<a href="#">-->
-                <!--<img class="media-object" src="/static/fang1.jpeg" alt="...">-->
-            <!--</a>-->
-        <!--</div>-->
-        <!--<div class="media-body">-->
+<!--<div class="media">-->
+<!--<div class="media-left">-->
+<!--<a href="#">-->
+<!--<img class="media-object" src="/static/fang1.jpeg" alt="...">-->
+<!--</a>-->
+<!--</div>-->
+<!--<div class="media-body">-->
 
-            <!--<a href=""><h4 class="media-heading">单间出租)航海路 未来路 宝景花园 出门公交站 旁有小吃街 交通方便</h4></a>-->
-            <!--<label><p class="text-muted">价格：1000/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：60平&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园-->
-                <!--&nbsp;&nbsp;&nbsp;&nbsp;郑州管城区</p>-->
-            <!--</label>-->
+<!--<a href=""><h4 class="media-heading">单间出租)航海路 未来路 宝景花园 出门公交站 旁有小吃街 交通方便</h4></a>-->
+<!--<label><p class="text-muted">价格：1000/月 &nbsp;&nbsp; &nbsp;&nbsp; 面积：60平&nbsp;&nbsp;&nbsp;&nbsp; 位置：宝景花园-->
+<!--&nbsp;&nbsp;&nbsp;&nbsp;郑州管城区</p>-->
+<!--</label>-->
 
-            <!--&lt;!&ndash;<div class="touxiang"><img src="/static/background.jpg" alt="..." class="img-1circle" align="left">&nbsp;&nbsp;   张三 <br>  &nbsp;1333333333&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="touxiang"><img src="/static/background.jpg" alt="..." class="img-1circle" align="left">&nbsp;&nbsp;   张三 <br>  &nbsp;1333333333&ndash;&gt;-->
 
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-
-            <!--<div>-->
-                <!--<img src="/static/background.jpg" id="touxiang" class="fl sp-icon-list" alt="绿色">-->
-                <!--<span class="fl">&nbsp;&nbsp;张三 </span>-->
-                <!--<br>-->
-                <!--<span>&nbsp;&nbsp;13333333333</span>-->
-            <!--</div>-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
 
 
-        <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
+<!--<div>-->
+<!--<img src="/static/background.jpg" id="touxiang" class="fl sp-icon-list" alt="绿色">-->
+<!--<span class="fl">&nbsp;&nbsp;张三 </span>-->
+<!--<br>-->
+<!--<span>&nbsp;&nbsp;13333333333</span>-->
+<!--</div>-->
+
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 </body>
 </html>

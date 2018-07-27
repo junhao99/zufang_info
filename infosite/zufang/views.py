@@ -6,10 +6,16 @@ from django.shortcuts import render
 from zufang.models import Zufang_Info
 
 
-def show_main_info(request):
+def show_content(request,info_id):
     # s = Zufang_Info(title = "1",month_money = "100",mianji = "100")
+    contact_list = Zufang_Info.objects.all()
+    dict1 = {}
 
-    return render(request, "info_content.html")
+    # res = Zufang_Info.objects.all()
+    res = Zufang_Info.objects.get(id=info_id)
+    dict1["info"] = res
+
+    return render(request, "info_content.html",dict1)
 
 
 def show_info(request):
