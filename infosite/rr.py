@@ -6,12 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # 通过ip网站获取代理ip
-from celery import Celery
 from lxml import etree
-
-import requests as req
-
-app = Celery('test', broker='pyamqp://admin:admin@localhost:5672/demo')
 
 
 def cast_a_vote(url, headers, ip_list):
@@ -78,8 +73,9 @@ def spider(url, ip_list):
     return html
 
 
-@app.task
 def get_content_infomation(res, i):
+
+
     html = etree.HTML(res)
     # print(html)
     start_url = "http:"
@@ -122,7 +118,7 @@ def get_content_infomation(res, i):
     print(house_mianji)
 
     city_address = "none"
-    address = "none"
+    address ="none"
     res_address = html.xpath("//ul[@class='f14']/li/span/a[@class='c_333 ah']/text()")
     if res_address:
         print(address)
@@ -136,16 +132,12 @@ def get_content_infomation(res, i):
         house_img = start_url + h_img[0]
     print(house_img)
 
-    conn = psycopg2.connect(dbname="test3", user="test",
+    conn = psycopg2.connect(dbname="test2", user="test",
                             password="123456", host="127.0.0.1", port="5432")
     cursor = conn.cursor()
-    # cursor.execute(
-    #     " UPDATE zufang_zufang_info SET title='%s',month_money='%s',mianji='%s',img='%s',jjr_img='%s',jjr='%s',jjr_phone='%s',address='%s',city_address='%s' WHERE id='%d';" % (
-    #         info_title, month_money, house_mianji, house_img, jjr_img, jjr, jjr_phone, address, city_address, i))
-    # conn.commit()
     cursor.execute(
-        "INSERT INTO zufang_zufang_info (title, month_money, mianji, img, jjr_img,next_url ,jjr, jjr_phone, address, city_address)VALUES('%s','%s','%s','%s','%s','url','%s','%s','%s','%s');" % (
-            info_title, month_money, house_mianji, house_img, jjr_img, jjr, jjr_phone, address, city_address))
+        " UPDATE zufang_zufang_info SET title='%s',month_money='%s',mianji='%s',img='%s',jjr_img='%s',jjr='%s',jjr_phone='%s',address='%s',city_address='%s' WHERE id='%d';" % (
+            info_title, month_money, house_mianji, house_img, jjr_img, jjr, jjr_phone, address,city_address,i))
     conn.commit()
 
 
@@ -168,15 +160,20 @@ def get_web_html(i, proxies):
     # print(i)
 
 
-#     连接数据库进行操作  添加next_url
-def db_add_url(next_url):
-    conn = psycopg2.connect(dbname="test3", user="test",
+#     连接数据库进行操作
+def db_conn(i, title, month_money, mianji, img, next_url):
+    i = i + 1
+    conn = psycopg2.connect(dbname="test2", user="test",
                             password="123456", host="127.0.0.1", port="5432")
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO zufang_zufang_url(next_url) VALUES('%s');" % next_url)
+        "INSERT INTO zufang_zufang_info VALUES('%d','%s', '%s', '%s','%s','%s','none','none','none')" % (
+            i, title, month_money, mianji, img, next_url))
     conn.commit()
-    conn.close()
+
+    # s = "INSERT INTO zufang_zufang_info VALUES('%s', '%s', '%s')"%("dsd","dsds","dffdqq")
+    # print(s)
+    # rows = cursor.fetchall()
 
 
 def db_add(title, month_money, mianji, img, jjr_img, jjr, jjr_phone, address):
@@ -195,25 +192,68 @@ def db_add(title, month_money, mianji, img, jjr_img, jjr, jjr_phone, address):
 def get_index_infomation(res):
     html = etree.HTML(res)
     print(html)
-    # mianji = html.xpath("//div/p[@class='room']/text()")
+    title = html.xpath("//div[@class='des']/h2/a/text()")
+    print(len(title), "title")
+    # for i in title:
+    #     print(i.strip())
 
+    #    租房信息的标题
+    money = html.xpath("//div[@class='money']/b/text()")
+    # print(money)
+    print(len(money), "money")
+    #     月租
+
+    mianji = html.xpath("//div/p[@class='room']/text()")
+    # for i in mianji:
+    #     print(i.split())
+    print(len(mianji), "mianji")
+    #         面积
+
+    jjr = html.xpath("//span[@class='listjjr']/text()")
+    # for i in jjr:
+    #     print(i.strip())
+    #         经纪人
+    address = html.xpath("//div/p[@class='add']/a/text()")
+    # print(address)
+    # 地址
+    img = html.xpath("//div[@class='img_list']/a/img/@lazy_src")
+    # 首页imgurl图片地址
+    # print(img)
+
+    # for i in img:
+    #     img_url = "http://" + i
+    #     print(img_url)
     next_url = html.xpath("//div[@class='listBox']/ul/li/@logr")
 
     start_url = "http://zz.58.com/zufang/"
     ip_list = get_ip_port()
-    for i, j in enumerate(next_url):
-        print(i)
-        content_url = start_url + j.split("_")[3] + "x.shtml"
-        db_add_url(content_url)
+    # 存入数据库
+    for i, j in enumerate(money):
+        print("++" * 10)
+        a = title[i].strip()
+        # a是标题
+        b = money[i]
+        # b是月租
+        c = mianji[i].split()[1]
+        # c是面积
+        # 传给dbconn 存入数据库
+        img_url = "http://"
+        d = img_url + img[i]
+        # d是图片
+        content_url = start_url + next_url[i].split("_")[3] + "x.shtml"
+        # print(content_url)
+        db_conn(i, a, b, c, d, content_url)
 
 
-# 得到租房信息的详细数据
+#         a就是得到租房信息的详情html
+
+
 def mian_content_data():
     conn = psycopg2.connect(dbname="test2", user="test",
                             password="123456", host="127.0.0.1", port="5432")
     cursor = conn.cursor()
     cursor.execute(
-        "select next_url,id from zufang_zufang_url")
+        "select next_url,id from zufang_zufang_info")
     # conn.commit()
     res = cursor.fetchall()
     for i, j in enumerate(res):
@@ -222,7 +262,6 @@ def mian_content_data():
         html = spider(j[0], ip_list)
 
         get_content_infomation(html, j[1])
-
 
 #     数据库去重，删除空数据
 def db_delete():
@@ -234,30 +273,25 @@ def db_delete():
     conn.commit()
     conn.close()
 
-
-if __name__ == "__main__":
-    app.start()
-
+if __name__ == '__main__':
     # 爬取index内容
-    res_list = get_ip_port()
-    j = 1
-    for i in res_list:
-        print(i)
-        ip = i[1]
-        port = i[0]
-        print(ip, port)
-        proxies = {str(ip): str(port)}
-        get_web_html(j, proxies)
-        j += 1
-        break
+    # res_list = get_ip_port()
+    # j = 1
+    # for i in res_list:
+    #     print(i)
+    #     ip = i[1]
+    #     port = i[0]
+    #     print(ip, port)
+    #     proxies = {str(ip): str(port)}
+    #     get_web_html(j, proxies)
+    #     j += 1
+    #     break
 
-# mian_content_data()
-
-
-# db_delete()
+    mian_content_data()
+    # db_delete()
 
 
-# dbconn()
+    # dbconn()
 
-# ip_list = get_ip_list(url, headers=headers)
-# cast_a_vote(vote_url, headers, ip_list)
+    # ip_list = get_ip_list(url, headers=headers)
+    # cast_a_vote(vote_url, headers, ip_list)
