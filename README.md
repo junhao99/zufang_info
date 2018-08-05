@@ -6,3 +6,6 @@
 next step：把爬取到的详情页next_url和下一页的链接分别存到数据库表中，重构爬虫模块代码
 step 2：实现分布式爬虫，使用celery+rabbitmq
 step 3：用spider实现爬虫功能
+
+
+7.29  实现next step 和step2 重新设计表 用celery进行爬取
