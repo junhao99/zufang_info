@@ -143,10 +143,13 @@ def get_content_infomation(res, i):
     #     " UPDATE zufang_zufang_info SET title='%s',month_money='%s',mianji='%s',img='%s',jjr_img='%s',jjr='%s',jjr_phone='%s',address='%s',city_address='%s' WHERE id='%d';" % (
     #         info_title, month_money, house_mianji, house_img, jjr_img, jjr, jjr_phone, address, city_address, i))
     # conn.commit()
-    cursor.execute(
-        "INSERT INTO zufang_zufang_info (title, month_money, mianji, img, jjr_img,next_url ,jjr, jjr_phone, address, city_address)VALUES('%s','%s','%s','%s','%s','url','%s','%s','%s','%s');" % (
-            info_title, month_money, house_mianji, house_img, jjr_img, jjr, jjr_phone, address, city_address))
-    conn.commit()
+
+
+
+    # cursor.execute(
+    #     "INSERT INTO zufang_zufang_info (title, month_money, mianji, img, jjr_img,next_url ,jjr, jjr_phone, address, city_address)VALUES('%s','%s','%s','%s','%s','url','%s','%s','%s','%s');" % (
+    #         info_title, month_money, house_mianji, house_img, jjr_img, jjr, jjr_phone, address, city_address))
+    # conn.commit()
 
 
 def get_web_html(i, proxies):
@@ -226,7 +229,7 @@ def mian_content_data():
 
 #     数据库去重，删除空数据
 def db_delete():
-    conn = psycopg2.connect(dbname="test2", user="test",
+    conn = psycopg2.connect(dbname="test3", user="test",
                             password="123456", host="127.0.0.1", port="5432")
     cursor = conn.cursor()
     cursor.execute(
@@ -236,7 +239,7 @@ def db_delete():
 
 
 if __name__ == "__main__":
-    app.start()
+    # app.start()
 
     # 爬取index内容
     res_list = get_ip_port()
@@ -254,7 +257,7 @@ if __name__ == "__main__":
 # mian_content_data()
 
 
-# db_delete()
+    # db_delete()
 
 
 # dbconn()
