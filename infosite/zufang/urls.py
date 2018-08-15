@@ -11,4 +11,5 @@ urlpatterns = [
     path('page/<int:one_page>', views.page, name='onepage'),
     path('infos/search', views.user_seacrch, name="ss"),
     path('infos/page/<int:number>',views.info_page,name='page_num'),
+    path('user/info',views.user_add_info,name = "add_zf_info"),
 ]

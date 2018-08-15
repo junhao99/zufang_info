@@ -1,6 +1,5 @@
-
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import request
+from django.http import request, HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
 
@@ -21,7 +20,7 @@ def show_index_by_price(request, number):
     dict1 = {}
     count = Zufang_Info.objects.all().count()
     print(count)
-    page_number = int(count / 10)+1
+    page_number = int(count / 10) + 1
     print(page_number)
     print("dddddddddddddddd")
     # Show 10 contacts per page
@@ -29,7 +28,7 @@ def show_index_by_price(request, number):
 
     # res = Zufang_Info.objects.all()[:10]
     dict1["aaa"] = res
-    num = [i for i in range(1,page_number+1)]
+    num = [i for i in range(1, page_number + 1)]
     print(num)
     dict1["page_number"] = num
     name = 'info_price'
@@ -56,7 +55,7 @@ def show_info(request, number):
     # page_number = Paginator(contact_list, 10)
     count = Zufang_Info.objects.all().count()
     print(count)
-    page_number = int(count / 10)+1
+    page_number = int(count / 10) + 1
     print(page_number)
     print("dddddddddddddddd")
     # Show 10 contacts per page
@@ -64,12 +63,13 @@ def show_info(request, number):
 
     # res = Zufang_Info.objects.all()[:10]
     dict1["aaa"] = res
-    num = [i for i in range(1,page_number+1)]
+    num = [i for i in range(1, page_number + 1)]
     print(num)
     dict1["page_number"] = num
     name = 'allinfos'
     dict1["page_name"] = name
     return render(request, "index.html", dict1)
+
 
 def page(request, one_page):
     print("page")
@@ -107,4 +107,13 @@ def user_seacrch(request):
 
 
 def show_map(request):
-    return render(request, "text.html")
+
+    return render(request, "map.html")
+
+
+def user_add_info(request):
+    if request.POST:
+        a = request.POST["title"]
+        request.session["id"] = 1
+        return HttpResponse("a")
+    return render(request, "add_zufanginfo.html")

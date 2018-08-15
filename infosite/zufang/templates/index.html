@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css.css" />
+    <link rel="stylesheet" href="css.css"/>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -196,6 +196,11 @@ text-align:center;
 }
 
     
+#button_add{
+float:right;
+margin-right:10%;
+}
+
 
 
 
@@ -240,13 +245,18 @@ text-align:center;
 
     <form class="form-inline navbar-form pull-right" action="{%url 'ss'%}" method="post">
         {% csrf_token %}
-        <input class="form-control" type="text"  name="search_content"placeholder="请输入内容"
+        <input class="form-control" type="text" name="search_content" placeholder="请输入内容"
         >
         <button class="btn btn-success-outline" type="submit">查找</button>
     </form>
+
+
 </nav>
+<br><br>
+<button id="button_add" onclick="add_info()">免费发布信息</button>
 
 
+<br><br><br>
 {%for i in aaa%}
 
 <div class="zufang_content">
@@ -286,23 +296,23 @@ text-align:center;
 
 
 <!--<nav>-->
-    <!--<ul class="pagination pagination-lg">-->
-        <!--<li>-->
-            <!--<a href="#" aria-label="Previous">-->
-                <!--<span aria-hidden="true">&laquo;</span>-->
-                <!--<span class="sr-only">Previous</span>-->
-            <!--</a>-->
-        <!--</li>-->
-        <!--<li><a href="{%url 'onepage' 2%}">1</a></li>-->
-        <!--<li><a href="{%url 'page_num' 1%}">2</a></li>-->
-        <!--<li><a href="{%url 'page_num' 2%}">3</a></li>-->
-        <!--<li>-->
-            <!--<a href="#" aria-label="Next">-->
-                <!--<span aria-hidden="true">&raquo;</span>-->
-                <!--<span class="sr-only">Next</span>-->
-            <!--</a>-->
-        <!--</li>-->
-    <!--</ul>-->
+<!--<ul class="pagination pagination-lg">-->
+<!--<li>-->
+<!--<a href="#" aria-label="Previous">-->
+<!--<span aria-hidden="true">&laquo;</span>-->
+<!--<span class="sr-only">Previous</span>-->
+<!--</a>-->
+<!--</li>-->
+<!--<li><a href="{%url 'onepage' 2%}">1</a></li>-->
+<!--<li><a href="{%url 'page_num' 1%}">2</a></li>-->
+<!--<li><a href="{%url 'page_num' 2%}">3</a></li>-->
+<!--<li>-->
+<!--<a href="#" aria-label="Next">-->
+<!--<span aria-hidden="true">&raquo;</span>-->
+<!--<span class="sr-only">Next</span>-->
+<!--</a>-->
+<!--</li>-->
+<!--</ul>-->
 <!--</nav>-->
 {{page_name}}
 {{page_number}}
@@ -310,24 +320,24 @@ text-align:center;
     <div class="pagination">
         <ul>
             <li><a href="javascript:void(0)"></a></li>
-            <li id="l1"class=""><a href="{%url 'page_num' 1%}"id="a1"style=""></a></li>
-            <li id="l2"><a href="{%url 'page_num' 2%}"onclick="done('l2')"></a></li>
+            <li id="l1" class=""><a href="{%url 'page_num' 1%}" id="a1" style=""></a></li>
+            <li id="l2"><a href="{%url 'page_num' 2%}" onclick="done('l2')"></a></li>
             <li id="l3"><a href="{%url 'page_num' 3%}"></a></li>
 
-{% ifequal page_name 'allinfos' %}
+            {% ifequal page_name 'allinfos' %}
             {%for i in page_number%}
             <li><a href="{%url 'allinfos' i%}"></a></li>
             {%endfor%}
-{% endifequal %}
-{% ifequal page_name 'info_price' %}
+            {% endifequal %}
+            {% ifequal page_name 'info_price' %}
             {%for i in page_number%}
             <li><a href="{%url 'info_price' i%}"></a></li>
             {%endfor%}
-{% endifequal %}
+            {% endifequal %}
 
             <li class="active"><a href="javascript:void(0)"></a></li>
 
-            <li><a href="javascript:void(0)"onclick="done('a1')"></a></li>
+            <li><a href="javascript:void(0)" onclick="done('a1')"></a></li>
         </ul>
     </div>
 </div>
@@ -341,5 +351,21 @@ text-align:center;
         <!--window.location.reload()-->
         console.log(document.getElementById(element_id).style)
     }
+
+    function add_info(){
+    console.log("hello world")
+    fetch("http://127.0.0.1:8000/zufang/infos/map",{nethod:'post'})
+    .then(
+            function(){
+                        <!--window.location.reload();-->
+                        window.location="/zufang/user/info";
+                    }
+
+               )
+
+    }
+
+
+
 </script>
 </html>
